@@ -1,0 +1,121 @@
+<%- include('partials/_header'); -%>
+
+<div class="header alert alert-info" style="text-align: right">
+  Bienvenido <%=session.username%><span>|</span>
+  <a href="logout">Cerrar sesión</a>
+</div>
+<div class="container">
+  <div class="row mt-6">
+    <div class="col-md-7">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>nº</th>
+            <th>Nombre</th>
+            <th>Falla</th>
+            <th>Email</th>
+            <th>Celular</th>
+            <th>Acciones</th>
+            <th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (data) { %> <% for(var i = 0; i < data.length; i++) { %>
+          <tr>
+            <td><%= (i + 1) %></td>
+            <td><%= data[i].nombre %></td>
+            <td><%= data[i].adress %></td>
+            <td><%= data[i].email %></td>
+            <td><%= data[i].phone %></td>
+            <td>
+              <a href="/update/<%= data[i].id %>" class="btn btn-info"
+                >Editar</a
+              >
+              <form
+                method="POST"
+                action="/delete/<%= data[i].id %>?_method=DELETE"
+              >
+                <button type="submit" class="btn btn-danger">Borrar</button>
+              </form>
+            </td>
+            <td>Procesando</td>
+          </tr>
+          <% } %> <% } %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <form action="/add" method="post">
+            <div class="form-group">
+              <input
+                type="text"
+                name="nombre"
+                placeholder="Nombre"
+                class="form-control"
+              />
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="adress"
+                  placeholder="Falla"
+                  class="form-control"
+                />
+                <div class="form-group">
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="Email"
+                    class="form-control"
+                  />
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="phone"
+                      placeholder="Celular"
+                      class="form-control"
+                    />
+                  </div>
+                  <input
+                    type="hidden"
+                    name="id_user"
+                    value="<%= session.id_user %>"
+                  />
+                  <button type="submit" class="btn btn-primary">
+                    Guardar Usuario
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <p></p>
+  <p></p>
+  <form action="showJSON">
+    <center>
+      <button type="submit" class="btn btn-success" id="btnconsulta">
+        Generar Salida Json
+      </button>
+    </center>
+  </form>
+  <% if (JSON) { %>
+
+  <div class="jumbotron">
+    <pre><%= JSON %></pre>
+    <form action="downloadJSON">
+      <center>
+        <button type="submit" class="btn btn-info">
+          Descargara archivo Json
+        </button>
+      </center>
+    </form>
+  </div>
+  <% } %>
+</div>
+<%- include('partials/_footer'); -%>
